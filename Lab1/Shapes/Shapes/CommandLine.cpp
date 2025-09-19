@@ -21,8 +21,9 @@ const std::unordered_map<std::string, cli::CommandType> cli::CommandLine::s_comm
 	{ "List", cli::CommandType::List },
 };
 
-cli::CommandLine::CommandLine(gfx::ICanvas& canvas)
+cli::CommandLine::CommandLine(gfx::ICanvas& canvas, shapes::Picture& picture)
 	: m_canvas{ canvas }
+	, m_picture{ picture }
 {
 }
 
@@ -220,6 +221,7 @@ void cli::CommandLine::HandleList() const
 	}
 }
 
+// фабрика 
 std::unique_ptr<shapes::IShapeStrategy> cli::CommandLine::CreateStrategy(const std::string& type, std::vector<std::string>& params) const
 {
 	if (type == "circle")
@@ -286,7 +288,7 @@ std::unique_ptr<shapes::IShapeStrategy> cli::CommandLine::CreateStrategy(const s
 		std::string text;
 		for (size_t i = 3; i < params.size(); ++i)
 		{
-			text += params[i];
+			text += " " + params[i];
 		}
 
 		return std::make_unique<shapes::TextStrategy>(Point(left, top), text, fontSize);

@@ -1,9 +1,12 @@
 #pragma once
 #include "TriangleStrategy.h"
+#include <iostream>
 
 shapes::TriangleStrategy::TriangleStrategy(const Point& point1, const Point& point2, const Point& point3)
 {
 	m_point1 = point1;
+	m_point2 = point2;
+	m_point3 = point3;
 }
 
 void shapes::TriangleStrategy::Draw(gfx::ICanvas& canvas, const gfx::Color& color)
@@ -30,7 +33,7 @@ std::string shapes::TriangleStrategy::ParametersToString() const
 		+ std::to_string(m_point2.GetY()) + " "
 		+ std::to_string(m_point3.GetX()) + " "
 		+ std::to_string(m_point3.GetY());
-}
+} 
 
 std::string shapes::TriangleStrategy::GetShapeName() const
 {
