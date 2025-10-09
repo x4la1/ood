@@ -22,7 +22,7 @@ enum class CommandType
 class CommandLine
 {
 public:
-	CommandLine(gfx::ICanvas& canvas);
+	CommandLine(gfx::ICanvas& canvas, shapes::Picture& picture);
 	void HandleCommand(const std::string& command);
 
 private:
@@ -43,7 +43,7 @@ private:
 	std::unique_ptr<shapes::IShapeStrategy> CreateStrategy(const std::string& type, std::vector<std::string>& params) const;
 
 	gfx::ICanvas& m_canvas;
-	shapes::Picture m_picture;
+	shapes::Picture& m_picture;
 
 	const static std::unordered_map<std::string, CommandType> s_commandTypes;
 };

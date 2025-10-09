@@ -5,14 +5,12 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <sstream>
-//add probels v text cli
-//
+
+//вынести из main (мб отдельный поток)
+
 int main()
 {
-	sf::ContextSettings settings;
-	settings.antialiasingLevel = 8;
-
-	sf::RenderWindow window(sf::VideoMode(1000, 1000), "SFML works!", sf::Style::Default, settings);
+	sf::RenderWindow window(sf::VideoMode(1000, 1000), "SFML works!", sf::Style::Default);
 	window.clear(sf::Color::White);
 
 	sf::RenderTexture permanentCanvas;
@@ -23,7 +21,9 @@ int main()
 	sf::Sprite canvasSprite(permanentCanvas.getTexture());
 
 	gfx::Canvas canvas(permanentCanvas);
-	cli::CommandLine commandLine(canvas);
+	shapes::Picture picture;
+
+	cli::CommandLine commandLine(canvas, picture);
 
 	window.display();
 	permanentCanvas.display();
