@@ -136,7 +136,9 @@ public:
 	{
 		auto it = m_observerPriorities.find(observer);
 		if (it == m_observerPriorities.end())
+		{
 			return;
+		}
 
 		auto priority = it->second;
 		m_priorityObservers.erase(priority);

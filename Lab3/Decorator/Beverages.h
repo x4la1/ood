@@ -165,6 +165,21 @@ public:
 		}
 	}
 
+	std::string GetDescription() const override
+	{
+		switch (m_milkshakePortion)
+		{
+		case MilkshakePortion::Small:
+			return "Small Milkshake";
+		case MilkshakePortion::Medium:
+			return "Medium Milkshake";
+		case MilkshakePortion::Large:
+			return "Large Milkshake";
+		default:
+			break;
+		}
+	}
+
 private:
 	MilkshakePortion m_milkshakePortion;
 };

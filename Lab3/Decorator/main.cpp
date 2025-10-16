@@ -161,7 +161,7 @@ void DialogWithUser()
 
 int main()
 {
-	DialogWithUser();
+	//DialogWithUser();
 	cout << endl;
 	{
 		// Наливаем чашечку латте
@@ -246,4 +246,13 @@ int main()
 		// Выписываем счет покупателю
 		cout << beverage->GetDescription() << " costs " << beverage->GetCost() << endl;
 	}
+
+
+
+
+
+
+
+
+
 }

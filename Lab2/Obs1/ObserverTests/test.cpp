@@ -2,10 +2,10 @@
 #include "../../Obs1/Obs1/WeatherData.h"
 
 
-class MockSelfRemovingObserver : public MonoObserver<OutsideWeatherInfo>, public std::enable_shared_from_this<MockSelfRemovingObserver>
+class SelfRemovingObserver : public MonoObserver<OutsideWeatherInfo>, public std::enable_shared_from_this<SelfRemovingObserver>
 {
 public:
-	MockSelfRemovingObserver(IObservable<OutsideWeatherInfo>& observable)
+	SelfRemovingObserver(IObservable<OutsideWeatherInfo>& observable)
 		: MonoObserver<OutsideWeatherInfo>(observable) {}
 
 	int update_count = 0;
@@ -19,8 +19,8 @@ public:
 
 TEST(ObservableTest, ObserverSelfRemoving) {
 	WeatherDataOutside subject;
-	auto obs1 = std::make_shared<MockSelfRemovingObserver>(subject);
-	auto obs2 = std::make_shared<MockSelfRemovingObserver>(subject);
+	auto obs1 = std::make_shared<SelfRemovingObserver>(subject);
+	auto obs2 = std::make_shared<SelfRemovingObserver>(subject);
 
 	subject.RegisterObserver(obs1, 1);
 	subject.RegisterObserver(obs2, 2);
