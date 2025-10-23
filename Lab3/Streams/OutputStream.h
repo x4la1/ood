@@ -78,7 +78,6 @@ private:
 class MemoryOutputStream : public IOutputDataStream
 {
 public:
-
 	MemoryOutputStream(std::vector<uint8_t>& data)
 		:m_data(&data), m_isOpen(true)
 	{
@@ -129,49 +128,20 @@ private:
 	bool m_isOpen = true;
 };
 
-
-class OutputStreamDecorator : public IOutputDataStream
+class EncryptOutputStreamDecorator :public IOutputDataStream
 {
 public:
 	using IOutputDataStreamPtr = std::unique_ptr<IOutputDataStream>;
 
-	void WriteByte(uint8_t data) override
-	{
-		m_outputStream->WriteByte(data);
-	}
-
-	void WriteBlock(const void* srcData, std::streamsize size) override
-	{
-		m_outputStream->WriteBlock(srcData, size);
-	}
-
-	void Close() override
-	{
-		m_outputStream->Close();
-	}
-
-protected:
-	OutputStreamDecorator(IOutputDataStreamPtr&& outputStream) : m_outputStream(move(outputStream))
-	{
-	}
-
-private:
-	IOutputDataStreamPtr m_outputStream;
-};
-
-
-class EncryptOutputStreamDecorator :public OutputStreamDecorator
-{
-public:
-	EncryptOutputStreamDecorator(IOutputDataStreamPtr&& stream, uint8_t key) :
-		OutputStreamDecorator(move(stream))
+	EncryptOutputStreamDecorator(IOutputDataStreamPtr&& outputStream, uint8_t key) :
+		m_outputStream(move(outputStream))
 	{
 		GenerateEncryptTable(key);
 	}
 
 	void WriteByte(uint8_t data) override
 	{
-		OutputStreamDecorator::WriteByte(m_encryptTable[data]);
+		m_outputStream->WriteByte(m_encryptTable[data]);
 	}
 
 	void WriteBlock(const void* srcData, std::streamsize size) override
@@ -186,19 +156,19 @@ public:
 			throw std::ios_base::failure("Invalid size\n");
 		}
 
-		std::vector<uint8_t> buffer(size);
+		std::vector<uint8_t> buffer(static_cast<const unsigned int>(size));
 		const uint8_t* src = static_cast<const uint8_t*>(srcData);
 		for (int i = 0; i < size; ++i)
 		{
 			buffer[i] = m_encryptTable[src[i]];
 		}
 
-		OutputStreamDecorator::WriteBlock(buffer.data(), size);
+		m_outputStream->WriteBlock(buffer.data(), size);
 	}
 
 	void Close() override
 	{
-		OutputStreamDecorator::Close();
+		m_outputStream->Close();
 	}
 
 private:
@@ -212,15 +182,17 @@ private:
 	}
 
 	std::vector<uint8_t> m_encryptTable;
-
+	IOutputDataStreamPtr m_outputStream;
 };
 
 
-class CompressOutputStreamDecorator : public OutputStreamDecorator
+class CompressOutputStreamDecorator : public IOutputDataStream
 {
 public:
-	CompressOutputStreamDecorator(IOutputDataStreamPtr&& stream)
-		:OutputStreamDecorator(move(stream))
+	using IOutputDataStreamPtr = std::unique_ptr<IOutputDataStream>;
+
+	CompressOutputStreamDecorator(IOutputDataStreamPtr&& outputStream)
+		:m_outputStream(move(outputStream))
 	{
 	}
 
@@ -245,6 +217,7 @@ public:
 			m_runLength = 1;
 		}
 	}
+
 	void WriteBlock(const void* srcData, std::streamsize size) override
 	{
 		if (srcData == nullptr)
@@ -267,7 +240,7 @@ public:
 	void Close() override
 	{
 		Update();
-		OutputStreamDecorator::Close();
+		m_outputStream->Close();
 	}
 
 private:
@@ -275,12 +248,13 @@ private:
 	{
 		if (m_runLength > 0)
 		{
-			OutputStreamDecorator::WriteByte(m_runLength);
-			OutputStreamDecorator::WriteByte(m_currentByte);
+			m_outputStream->WriteByte(m_runLength);
+			m_outputStream->WriteByte(m_currentByte);
 			m_runLength = 0;
 		}
 	}
 
+	IOutputDataStreamPtr m_outputStream;
 	uint8_t m_runLength = 0;
 	uint8_t m_currentByte = 0;
 };

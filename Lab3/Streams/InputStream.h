@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "IInputDataStream.h"
 #include <string>
 #include <fstream>
@@ -32,13 +32,13 @@ public:
 	{
 		CheckIsOpen();
 
+		uint8_t byte;
+		m_file.read(reinterpret_cast<char*>(&byte), 1);
+
 		if (IsEOF())
 		{
 			throw std::ios_base::failure("End of file reached\n");
 		}
-
-		uint8_t byte;
-		m_file.read(reinterpret_cast<char*>(&byte), 1);
 
 		if (m_file.fail())
 		{
@@ -147,7 +147,7 @@ public:
 
 		size_t byteCountLeft = m_data.size() - m_position;
 		std::streamsize byteCountForRead = std::min(size, static_cast<std::streamsize>(byteCountLeft));
-		std::memcpy(dstBuffer, &m_data[m_position], byteCountForRead);
+		std::memcpy(dstBuffer, &m_data[m_position], static_cast<size_t>(byteCountForRead));
 		m_position += byteCountForRead;
 
 		return byteCountForRead;
@@ -173,54 +173,20 @@ private:
 	bool m_isOpen;
 };
 
-
-class InputStreamDecorator : public IInputDataStream
+class DecryptInputStreamDecorator : public IInputDataStream
 {
 public:
 	using IInputDataStreamPtr = std::unique_ptr<IInputDataStream>;
 
-	bool IsEOF() const override final
-	{
-		return m_inputStream->IsEOF();
-	}
-
-	uint8_t ReadByte() override
-	{
-		return m_inputStream->ReadByte();
-	}
-
-	std::streamsize ReadBlock(void* dstBuffer, std::streamsize size) override
-	{
-		return m_inputStream->ReadBlock(dstBuffer, size);
-	}
-
-	void Close() override final
-	{
-		m_inputStream->Close();
-	}
-
-protected:
-	InputStreamDecorator(IInputDataStreamPtr&& inputStream)
-		: m_inputStream(move(inputStream))
-	{
-	}
-
-private:
-	IInputDataStreamPtr m_inputStream;
-};
-
-class DecryptInputStreamDecorator : public InputStreamDecorator
-{
-public:
-	DecryptInputStreamDecorator(IInputDataStreamPtr&& inputStream, uint8_t key)
-		:InputStreamDecorator(move(inputStream))
+	DecryptInputStreamDecorator(IInputDataStreamPtr&& inputStream, uint8_t key) :
+		m_inputStream(move(inputStream))
 	{
 		GenerateDecryptTable(key);
 	}
 
 	uint8_t ReadByte() override
 	{
-		return m_decryptTable[InputStreamDecorator::ReadByte()];
+		return m_decryptTable[m_inputStream->ReadByte()];
 	}
 
 	std::streamsize ReadBlock(void* dstBuffer, std::streamsize size) override
@@ -235,7 +201,7 @@ public:
 			throw std::ios_base::failure("Invalid size\n");
 		}
 
-		std::streamsize read = InputStreamDecorator::ReadBlock(dstBuffer, size);
+		std::streamsize read = m_inputStream->ReadBlock(dstBuffer, size);
 		uint8_t* ptr = static_cast<uint8_t*>(dstBuffer);
 		for (std::streamsize i = 0; i < read; ++i)
 		{
@@ -243,6 +209,16 @@ public:
 		}
 
 		return read;
+	}
+
+	bool IsEOF()const override
+	{
+		return m_inputStream->IsEOF();
+	}
+
+	void Close() override
+	{
+		m_inputStream->Close();
 	}
 
 private:
@@ -263,43 +239,27 @@ private:
 	}
 
 	std::vector<uint8_t> m_decryptTable;
+	IInputDataStreamPtr m_inputStream;
 };
 
-class DecompressInputStreamDecorator : public InputStreamDecorator
+class DecompressInputStreamDecorator : public IInputDataStream
 {
 public:
-	DecompressInputStreamDecorator(IInputDataStreamPtr&& inputStream)
-		:InputStreamDecorator(move(inputStream))
+	using IInputDataStreamPtr = std::unique_ptr<IInputDataStream>;
+
+	DecompressInputStreamDecorator(IInputDataStreamPtr&& inputStream) //TODO EBLANI
+		:m_inputStream(move(inputStream))
 	{
 	}
 
 	uint8_t ReadByte() override
 	{
-		if (m_bytesLeft == 0) {
-
-			if (InputStreamDecorator::IsEOF())
-			{
-				throw std::ios_base::failure("End of stream reached");
-			}
-
+		if (m_bytesLeft == 0)
+		{
 			uint8_t count;
-			count = InputStreamDecorator::ReadByte();
+			count = m_inputStream->ReadByte();
 
-			if (count == 0)
-			{
-				throw std::ios_base::failure("End of compressed data");
-			}
-
-			if (InputStreamDecorator::IsEOF()) {
-				throw std::ios_base::failure("Unexpected EOF while reading byte");
-			}
-
-			try {
-				m_currentByte = InputStreamDecorator::ReadByte();
-			}
-			catch (const std::ios_base::failure&) {
-				throw std::ios_base::failure("Unexpected EOF while reading byte");
-			}
+			m_currentByte = m_inputStream->ReadByte();
 
 			m_bytesLeft = count - 1;
 			return m_currentByte;
@@ -321,35 +281,44 @@ public:
 			throw std::ios_base::failure("Invalid size\n");
 		}
 
-		if (IsEOF())
-		{
-			return 0;
-		}
-
 		uint8_t* ptr = static_cast<uint8_t*>(dstBuffer);
 		std::streamsize readed = 0;
 
-		try {
-			while (readed < size && !IsEOF())
+		while (readed < size)
+		{
+			try
 			{
 				ptr[readed] = ReadByte();
 				++readed;
 			}
-		}
-		catch (const std::ios_base::failure& e)
-		{
-			if (readed == 0 && !IsEOF())
+			catch (const std::ios_base::failure& e)
 			{
-				throw;
+				break;
 			}
 		}
 
 		return readed;
 	}
 
+	bool IsEOF() const override
+	{
+		if (m_bytesLeft > 0)
+		{
+			return false;
+		}
+
+		return m_inputStream->IsEOF();
+	}
+
+	void Close() override
+	{
+		m_inputStream->Close();
+	}
+
 private:
 	uint8_t m_currentByte = 0;
 	uint8_t m_bytesLeft = 0;
+	IInputDataStreamPtr m_inputStream;
 };
 
 

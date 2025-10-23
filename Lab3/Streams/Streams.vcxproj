@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="FileTransformer.h" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
