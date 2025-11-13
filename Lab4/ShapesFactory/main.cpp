@@ -1,5 +1,6 @@
 ﻿#include "Client.h"
 #include <SFML/Graphics.hpp>
+
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(1000, 1000), "SFML works!");
@@ -8,6 +9,15 @@ int main()
 	auto canvas = std::make_unique<Canvas>(window);
 	auto designer = std::make_unique<Designer>(move(factory));
 	Client client(move(designer), move(painter), move(canvas));
+
+	try
+	{
+		client.CreateDraft();
+	}
+	catch (std::exception& e)
+	{
+		std::cout << e.what();
+	}
 
 	while (window.isOpen())
 	{

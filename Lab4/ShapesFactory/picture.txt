@@ -1,0 +1,20 @@
+triangle black 0 350 250 200 500 350
+triangle black 300 350 600 250 800 350
+ellipse yellow 650 100 45 45
+triangle yellow 650 55 635 40 665 40
+triangle yellow 695 100 710 85 710 115
+triangle yellow 650 145 635 160 665 160
+triangle yellow 605 100 590 85 590 115
+ellipse blue 150 80 40 25
+ellipse blue 175 85 45 30
+ellipse blue 200 80 35 25
+ellipse blue 450 120 35 20
+ellipse blue 475 125 40 25
+rectangle black 400 350 550 480
+triangle red 380 350 570 350 475 270
+rectangle blue 450 410 490 480
+rectangle yellow 510 380 540 410
+rectangle black 320 400 360 480
+regular_polygon green 340 360 8 60
+regular_polygon green 340 310 6 35
+end

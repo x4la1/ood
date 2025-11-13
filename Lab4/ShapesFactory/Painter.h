@@ -1,5 +1,6 @@
 #pragma once
 #include "PictureDraft.h"
+#include "iostream"
 
 class Painter
 {

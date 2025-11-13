@@ -8,7 +8,7 @@
 #include <regex>
 #include <sstream>
 #include <string>
-//клиент сам все распихивает
+// клиент сам все распихивает
 class IShapeFactory
 {
 public:
@@ -57,7 +57,7 @@ public:
 			return CreateRectangle(matches);
 		}
 
-		throw std::invalid_argument("Unknown shape format: " + desription + '\n');
+		throw std::invalid_argument("Unknown shape format: " + desription + "\n");
 	}
 
 private:

@@ -1,6 +1,7 @@
 #pragma once
 #include "PictureDraft.h"
 #include "ShapeFactory.h"
+#include <iostream>
 
 class IDesigner
 {
@@ -31,8 +32,15 @@ public:
 				break;
 			}
 
-			auto shape = m_factory->CreateShape(line);
-			draft->AddShape(move(shape));
+			try
+			{
+				auto shape = m_factory->CreateShape(line);
+				draft->AddShape(move(shape));
+			}
+			catch (std::exception& e)
+			{
+				std::cout << e.what();
+			}
 		}
 
 		return draft;
