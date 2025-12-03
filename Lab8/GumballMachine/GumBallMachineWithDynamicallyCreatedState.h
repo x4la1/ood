@@ -88,21 +88,10 @@ public:
 
 	void Refill(unsigned count)
 	{
-		if (count <= 10)
+		m_gumballMachine.Refill(count);
+		if (m_gumballMachine.GetBallCount() != 0)
 		{
-			m_gumballMachine.Refill(count);
-			if (m_gumballMachine.GetBallCount() == 0)
-			{
-				m_gumballMachine.SetSoldOutState();
-			}
-			else
-			{
-				m_gumballMachine.SetNoQuarterState();
-			}
-		}
-		else
-		{
-			std::cout << "Machine can collect maximum 10 gumballs\n";
+			m_gumballMachine.SetNoQuarterState();
 		}
 	}
 

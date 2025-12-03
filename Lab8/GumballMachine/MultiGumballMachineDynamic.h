@@ -107,7 +107,15 @@ public:
 
 	void EjectQuarter() override
 	{
-		m_gumballMachine.EjectQuarters();
+		if (m_gumballMachine.GetQuartersCount() == 0)
+		{
+			std::cout << "There is no quarters\n";
+		}
+		else
+		{
+			m_gumballMachine.EjectQuarters();
+			std::cout << "Quarter returned\n";
+		}
 	}
 
 	void TurnCrank() override
@@ -130,11 +138,11 @@ public:
 
 		if (m_gumballMachine.GetQuartersCount() == 0)
 		{
-			m_gumballMachine.SetHasQuarterState();
+			m_gumballMachine.SetNoQuarterState();
 		}
 		else
 		{
-			m_gumballMachine.SetNoQuarterState();
+			m_gumballMachine.SetHasQuarterState();
 		}
 		std::cout << "Gumballs refilled\n";
 	}
@@ -161,6 +169,7 @@ public:
 		if (m_gumballMachine.GetQuartersCount() != 5)
 		{
 			m_gumballMachine.AddQuarter();
+			std::cout << "You inserted a quarter\n";
 		}
 		else
 		{
@@ -189,6 +198,11 @@ public:
 	void Refill(unsigned count) override
 	{
 		m_gumballMachine.Refill(count);
+		if (m_gumballMachine.GetBallCount() == 0)
+		{
+			m_gumballMachine.SetSoldOutState();
+		}
+
 		std::cout << "Gumballs refilled\n";
 	}
 
@@ -234,6 +248,10 @@ public:
 	void Refill(unsigned count) override
 	{
 		m_gumballMachine.Refill(count);
+		if (m_gumballMachine.GetBallCount() == 0)
+		{
+			m_gumballMachine.SetSoldOutState();
+		}
 		std::cout << "Gumballs refilled\n";
 	}
 
@@ -287,11 +305,11 @@ public:
 	std::string ToString() const
 	{
 		return std::format(R"(
-						Mighty Gumball, Inc.
-						C++-enabled Standing Gumball Model #2016
-						Inventory: {} gumball{} {} quarter{}
-						Machine is {}
-					)",
+Mighty Gumball, Inc.
+C++-enabled Standing Gumball Model #2016
+Inventory: {} gumball{} {} quarter{}
+Machine is {}
+)",
 			m_gumballsCount, m_gumballsCount != 1 ? "s" : "", m_quartersCount, m_quartersCount != 1 ? "s" : "",
 			m_currentState->ToString());
 	}
@@ -332,13 +350,9 @@ private:
 
 	void Refill(unsigned count) override
 	{
-		if (m_gumballsCount + count <= 10)
+		if (count <= 10)
 		{
-			m_gumballsCount += count;
-		}
-		else
-		{
-			m_gumballsCount = 10;
+			m_gumballsCount = count;
 		}
 	}
 

@@ -85,6 +85,7 @@ public:
 		case State::HasQuarter:
 			cout << "You turned...\n";
 			m_state = State::Sold;
+			--m_quartersCount;
 			Dispense();
 			break;
 		case State::Sold:
@@ -93,31 +94,29 @@ public:
 		}
 	}
 
-	void Refill(unsigned numBalls)
+	void Refill(unsigned count)
 	{
-		if (m_gumballsCount + numBalls <= 10)
+		if (m_state == State::Sold)
 		{
-			m_gumballsCount += numBalls;
+			std::cout << "You can't refill now\n";
+			return;
+		}
+
+		m_gumballsCount = count;
+		if (m_gumballsCount == 0)
+		{
+			m_state = State::SoldOut;
 		}
 		else
 		{
-			m_gumballsCount = 10;
-		}
-
-		if (m_gumballsCount > 0)
-		{
-			if (m_quartersCount > 0)
-			{
-				m_state = State::HasQuarter;
-			}
-			else
+			if (m_quartersCount == 0)
 			{
 				m_state = State::NoQuarter;
 			}
-		}
-		else
-		{
-			m_state = State::SoldOut;
+			else
+			{
+				m_state = State::HasQuarter;
+			}
 		}
 	}
 
@@ -132,10 +131,10 @@ public:
 		return std::format(R"(
 Mighty Gumball, Inc.
 C++-enabled Standing Gumball Model #2016
-Inventory: {} gumball{}
+Inventory: {} gumball{} {} quarter{}
 Machine is {}
-)",
-			m_gumballsCount, m_gumballsCount != 1 ? "s" : "", state);
+						)",
+			m_gumballsCount, m_gumballsCount != 1 ? "s" : "", m_quartersCount, m_quartersCount != 1 ? "s" : "", state);
 	}
 
 private:

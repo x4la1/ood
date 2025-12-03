@@ -128,7 +128,9 @@
     <ClCompile Include="MultiGumballMachineDynamic.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Command.h" />
     <ClInclude Include="GumBallMachineWithDynamicallyCreatedState.h" />
+    <ClInclude Include="Menu.h" />
     <ClInclude Include="NaiveGumBallMachine.h" />
     <ClInclude Include="NaiveMultiGumballMachine.h" />
   </ItemGroup>
