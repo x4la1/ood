@@ -1,7 +1,7 @@
 #pragma once
 #include "MultiGumballMachineDynamic.h"
 
-using machinePtr = std::shared_ptr<multi_with_dynamic_state::MultiGumballMachine>;
+using MachinePtr = std::shared_ptr<multi_with_dynamic_state::MultiGumballMachine>;
 
 class Menu;
 
@@ -15,7 +15,7 @@ public:
 class InsertQuarterCommand : public ICommand
 {
 public:
-	InsertQuarterCommand(machinePtr machine)
+	InsertQuarterCommand(MachinePtr machine)
 		: m_machine{ machine }
 	{
 	}
@@ -26,13 +26,13 @@ public:
 	}
 
 private:
-	machinePtr m_machine;
+	MachinePtr m_machine;
 };
 
 class EjectQuartersCommand : public ICommand
 {
 public:
-	EjectQuartersCommand(machinePtr& machine)
+	EjectQuartersCommand(MachinePtr& machine)
 		: m_machine{ machine }
 	{
 	}
@@ -43,13 +43,13 @@ public:
 	}
 
 private:
-	machinePtr m_machine;
+	MachinePtr m_machine;
 };
 
 class TurnCrankCommand : public ICommand
 {
 public:
-	TurnCrankCommand(machinePtr machine)
+	TurnCrankCommand(MachinePtr machine)
 		: m_machine{ machine }
 	{
 	}
@@ -60,13 +60,13 @@ public:
 	}
 
 private:
-	machinePtr m_machine;
+	MachinePtr m_machine;
 };
 
 class RefillGumballsCommand : public ICommand
 {
 public:
-	RefillGumballsCommand(machinePtr machine, unsigned gumballsCount)
+	RefillGumballsCommand(MachinePtr machine, unsigned gumballsCount)
 		: m_machine{ machine }
 		, m_gumballsCount{ gumballsCount }
 	{
@@ -79,13 +79,13 @@ public:
 
 private:
 	unsigned m_gumballsCount;
-	machinePtr m_machine;
+	MachinePtr m_machine;
 };
 
 class InfoCommand : public ICommand
 {
 public:
-	InfoCommand(machinePtr machine)
+	InfoCommand(MachinePtr machine)
 		: m_machine{ machine }
 	{
 	}
@@ -96,7 +96,7 @@ public:
 	}
 
 private:
-	machinePtr m_machine;
+	MachinePtr m_machine;
 };
 
 class ExitMenuCommand : public ICommand
