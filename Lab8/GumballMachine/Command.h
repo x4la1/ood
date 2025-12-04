@@ -1,6 +1,8 @@
 #pragma once
 #include "MultiGumballMachineDynamic.h"
 
+using machinePtr = std::shared_ptr<multi_with_dynamic_state::MultiGumballMachine>;
+
 class Menu;
 
 class ICommand
@@ -13,58 +15,58 @@ public:
 class InsertQuarterCommand : public ICommand
 {
 public:
-	InsertQuarterCommand(multi_with_dynamic_state::MultiGumballMachine& machine)
+	InsertQuarterCommand(machinePtr machine)
 		: m_machine{ machine }
 	{
 	}
 
 	void Execute() override
 	{
-		m_machine.InsertQuarter();
+		m_machine->InsertQuarter();
 	}
 
 private:
-	multi_with_dynamic_state::MultiGumballMachine& m_machine;
+	machinePtr m_machine;
 };
 
 class EjectQuartersCommand : public ICommand
 {
 public:
-	EjectQuartersCommand(multi_with_dynamic_state::MultiGumballMachine& machine)
+	EjectQuartersCommand(machinePtr& machine)
 		: m_machine{ machine }
 	{
 	}
 
 	void Execute() override
 	{
-		m_machine.EjectQuarter();
+		m_machine->EjectQuarter();
 	}
 
 private:
-	multi_with_dynamic_state::MultiGumballMachine& m_machine;
+	machinePtr m_machine;
 };
 
 class TurnCrankCommand : public ICommand
 {
 public:
-	TurnCrankCommand(multi_with_dynamic_state::MultiGumballMachine& machine)
+	TurnCrankCommand(machinePtr machine)
 		: m_machine{ machine }
 	{
 	}
 
 	void Execute() override
 	{
-		m_machine.TurnCrank();
+		m_machine->TurnCrank();
 	}
 
 private:
-	multi_with_dynamic_state::MultiGumballMachine& m_machine;
+	machinePtr m_machine;
 };
 
 class RefillGumballsCommand : public ICommand
 {
 public:
-	RefillGumballsCommand(multi_with_dynamic_state::MultiGumballMachine& machine, unsigned gumballsCount)
+	RefillGumballsCommand(machinePtr machine, unsigned gumballsCount)
 		: m_machine{ machine }
 		, m_gumballsCount{ gumballsCount }
 	{
@@ -72,29 +74,29 @@ public:
 
 	void Execute() override
 	{
-		m_machine.RefillGumballs(m_gumballsCount);
+		m_machine->RefillGumballs(m_gumballsCount);
 	}
 
 private:
 	unsigned m_gumballsCount;
-	multi_with_dynamic_state::MultiGumballMachine& m_machine;
+	machinePtr m_machine;
 };
 
 class InfoCommand : public ICommand
 {
 public:
-	InfoCommand(multi_with_dynamic_state::MultiGumballMachine& machine)
+	InfoCommand(machinePtr machine)
 		: m_machine{ machine }
 	{
 	}
 
 	void Execute() override
 	{
-		std::cout << m_machine.ToString();
+		std::cout << m_machine->ToString();
 	}
 
 private:
-	multi_with_dynamic_state::MultiGumballMachine& m_machine;
+	machinePtr m_machine;
 };
 
 class ExitMenuCommand : public ICommand

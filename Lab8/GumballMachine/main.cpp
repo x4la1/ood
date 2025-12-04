@@ -7,7 +7,7 @@ using namespace multi_with_dynamic_state;
 
 int main()
 {
-	MultiGumballMachine machine(0);
+	auto machine = std::make_shared<MultiGumballMachine>(0);
 	Menu menu;
 
 	menu.AddItem("insert", std::make_unique<InsertQuarterCommand>(machine));
