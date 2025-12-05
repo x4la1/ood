@@ -8,7 +8,7 @@
 #include <regex>
 #include <sstream>
 #include <string>
-// клиент сам все распихивает
+
 class IShapeFactory
 {
 public:
@@ -17,16 +17,16 @@ public:
 };
 
 /*
-1.Создание правильного многоугольника:
+1.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:
 	regular_polygon <color> <center x> <center y> <vertex count> <radius>
 
-2.Создание эллипса:
+2.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ:
 	ellipse <color> <center x> <center y> <horizontal radius> <vertical radius>
 
-3.Создание треугольника:
+3.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:
 	triangle <color> <x1> <y1> <x2> <y2> <x3> <y3>
 
-4.Создание прямоугольника:
+4.пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:
 	rectagnle <color> <left-top x> <left-top y> <right-bottom x> <right-bottom y>
 
 	color = green | red | blue | yellow | pink | black

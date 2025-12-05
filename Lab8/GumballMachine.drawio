@@ -1,4 +1,4 @@
-<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.0.3 Chrome/140.0.7339.249 Electron/38.7.0 Safari/537.36" version="29.0.3">
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.2.8 Chrome/140.0.7339.240 Electron/38.4.0 Safari/537.36" version="28.2.8">
   <diagram name="Страница-1" id="-2_gRHMM9FjVB-UTJzRL">
     <mxGraphModel dx="3848" dy="2475" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -953,6 +953,12 @@
               <mxPoint x="4810" y="716" />
             </Array>
           </mxGeometry>
+        </mxCell>
+        <mxCell id="8CAGGTspEw2X72uQ_4Ry-2" value="Можно вставить монетку в пустой автомат&lt;br&gt;3 применения" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1700" width="690" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="8CAGGTspEw2X72uQ_4Ry-3" value="Примеры" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="3450" y="-270" width="140" height="70" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

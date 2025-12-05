@@ -24,5 +24,5 @@ public:
 	}
 
 private:
-	std::vector<ShapePtr> m_shapes{};
+	std::vector<ShapePtr> m_shapes;
 };

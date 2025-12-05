@@ -12,8 +12,9 @@ public:
 		std::unique_ptr<ICanvas>&& canvas)
 		: m_designer(move(designer))
 		, m_painter(move(painter))
-		, m_canvas(move(canvas)) {
-		};
+		, m_canvas(move(canvas)) 
+	{
+	};
 
 	void CreateDraft()
 	{

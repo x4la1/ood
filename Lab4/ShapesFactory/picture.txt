@@ -8,7 +8,7 @@ triangle yellow 605 100 590 85 590 115
 ellipse blue 150 80 40 25
 ellipse blue 175 85 45 30
 ellipse blue 200 80 35 25
-ellipse blue 450 120 35 20
+ellipse blue 450.123 120 35 20
 ellipse blue 475 125 40 25
 rectangle black 400 350 550 480
 triangle red 380 350 570 350 475 270
