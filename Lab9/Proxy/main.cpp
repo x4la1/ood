@@ -2,7 +2,7 @@
 #include "Image.h"
 #include <iostream>
 
-int main()
+void DrawSnowman()
 {
 	Image image({ 60, 30 }, ' ');
 
@@ -36,8 +36,13 @@ int main()
 	DrawLine(image, { 23, 1 }, { 27, 1 }, '#');
 	DrawLine(image, { 24, 0 }, { 26, 0 }, '#');
 
-	// DrawCircle(image, { 15, 15 }, 4, '#');
+	//DrawCircle(image, { 15, 15 }, 4, '#');
 
 	Print(image, std::cout);
+}
+
+int main()
+{
+	DrawSnowman();
 	return 0;
 }

@@ -3,10 +3,6 @@
 #include <sstream>
 #include <stdexcept>
 
-/**
- * ������������ ����������� ��������� �������. ���� ������� �� �������� ��������������,
- * ����������� ���������� std::out_of_range.
- */
 Image::Image(Size size, char color)
 {
 	if (size.width <= 0 || size.height <= 0)
@@ -28,16 +24,11 @@ Image::Image(Size size, char color)
 	}
 }
 
-// ���������� ������ ����������� � ��������.
 Size Image::GetSize() const noexcept
 {
 	return m_size;
 }
 
-/**
- * ���������� ����� ������� � ��������� �����������.���� ���������� ������� �� �������
- * �����������, ���������� �������.
- */
 char Image::GetPixel(Point p) const noexcept
 {
 	if (!IsPointInSize(p, m_size))
@@ -52,11 +43,7 @@ char Image::GetPixel(Point p) const noexcept
 	return m_tiles[tileY][tileX]->GetPixel(localPoint);
 }
 
-/**
- * ����� ����� ������� � ��������� �����������. ���� ���������� ������� �� ������� �����������
- * �������� ������������.
- */
-void Image::SetPixel(Point p, char color) 
+void Image::SetPixel(Point p, char color)
 {
 	if (!IsPointInSize(p, m_size))
 	{
@@ -67,7 +54,6 @@ void Image::SetPixel(Point p, char color)
 	const int tileY = p.y / Tile::SIZE;
 	const Point localPoint{ p.x % Tile::SIZE, p.y % Tile::SIZE };
 
-
 	m_tiles[tileY][tileX].Write()->SetPixel(localPoint, color);
 }
 
@@ -76,9 +62,6 @@ int Image::GetTileCount(int dimension)
 	return std::ceil(static_cast<double>(dimension) / Tile::SIZE);
 }
 
-/**
- * ������� � ����� out ����������� � ���� ��������.
- */
 void Print(const Image& img, std::ostream& out)
 {
 	const auto size = img.GetSize();
@@ -92,10 +75,6 @@ void Print(const Image& img, std::ostream& out)
 	}
 }
 
-/**
- * ��������� ����������� �� pixels. ����� ����������� ����������� ��������� \n.
- * ������� �������� ������������ �� ���������� ��������� ������ � ����� ������� �����.
- */
 Image LoadImage(const std::string& pixels)
 {
 	std::istringstream s(pixels);

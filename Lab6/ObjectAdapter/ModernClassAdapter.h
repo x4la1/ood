@@ -35,7 +35,7 @@ public:
 	}
 
 private:
-	modern_graphics_lib::RGBAColor RgbToRgba(uint32_t color)
+	modern_graphics_lib::RGBAColor RgbToRgba(uint32_t color) //либо static, либо вынести
 	{
 		uint32_t r, g, b;
 		r = (color >> 16) & 0xFF;

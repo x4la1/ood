@@ -8,7 +8,7 @@ public:
 	ModernObjectAdapter(modern_graphics_lib::ModernGraphicsRenderer& renderer)
 		: m_renderer{ renderer }
 	{
-		m_renderer.BeginDraw();
+		m_renderer.BeginDraw(); //logic клиент должен вызвать begin и end
 	}
 
 	~ModernObjectAdapter() override

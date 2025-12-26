@@ -11,8 +11,8 @@ class CoW
 		{
 		}
 
-		WriteProxy(const WriteProxy&) = delete; // запрет копирования
-		WriteProxy& operator=(const WriteProxy&) = delete; // запрет присваивания
+		WriteProxy(const WriteProxy&) = delete;
+		WriteProxy& operator=(const WriteProxy&) = delete;
 
 		Value& operator*() const& = delete;
 
@@ -33,32 +33,27 @@ class CoW
 	};
 
 public:
-	// Конструируем значение по умолчанию.
 	CoW()
 		: m_value(std::make_shared<Value>())
 	{
 	}
 
-	// Создаём значение за счёт перемещения его из value.
 	CoW(Value&& value)
 		: m_value(std::make_shared<Value>(std::move(value)))
 	{
 	}
 
-	// Создаём значение из value.
 	CoW(const Value& value)
 		: m_value(std::make_shared<Value>(value))
 	{
 	}
 
-	// Оператор разыменования служит для чтения значения.
 	const Value& operator*() const noexcept
 	{
 		assert(m_value);
 		return *m_value;
 	}
 
-	// Оператор -> служит для чтения полей и вызова константных методов.
 	const Value* operator->() const noexcept
 	{
 		assert(m_value);
@@ -69,16 +64,13 @@ public:
 	void Write(ModifierFn&& modify)
 	{
 		EnsureUnique();
-
 		std::forward<ModifierFn>(modify)(*m_value);
 	}
 
-	// Метод Write() нельзя вызвать только у rvalue-ссылок на CoW-объект.
 	WriteProxy Write() && = delete;
 	[[nodiscard]] WriteProxy Write() &
 	{
 		EnsureUnique();
-
 		return WriteProxy(m_value.get());
 	}
 
@@ -89,7 +81,6 @@ private:
 
 		if (m_value.use_count() > 1)
 		{
-			// Кроме нас на value ссылается кто-то ещё, копируем value.
 			m_value = std::make_shared<Value>(*m_value);
 		}
 	}
