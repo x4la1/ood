@@ -15,21 +15,18 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="HtmlEditor.cpp">
+    <ClCompile Include="MacroRobot.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Document.h">
+    <ClInclude Include="Robot.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="DocumentItem.h">
+    <ClInclude Include="Menu.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="History.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="Command.h">
+    <ClInclude Include="ICommand.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
