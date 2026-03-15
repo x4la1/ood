@@ -1,114 +1,100 @@
 #pragma once
-#include "CommonTypes.h"
-#include "ICanvas.h"
-#include "IShapeStyle.h"
-#include <functional>
+#include "Common.h"
+#include "IDrawable.h"
+#include "Style.h"
 #include <memory>
 #include <optional>
 
-class IGroup;
-
-class IShape
+class IShape : public IDrawable
 {
 public:
-	virtual RectD GetFrame() const = 0;
-	virtual void SetFrame(const RectD& frame) = 0;
-	virtual IShapeStyle& GetShapeStyle() = 0;
-	virtual void Draw(ICanvas& canvas) = 0;
-	virtual std::shared_ptr<IGroup> GetGroup() = 0;
+	virtual void SetFrame(const Frame& frame) = 0;
+	virtual std::optional<Frame> GetFrame() const = 0;
 
-	~IShape() = default;
+	virtual void SetOutlineColor(std::optional<uint32_t> color) = 0;
+	virtual std::optional<uint32_t> GetOutlineColor() const = 0;
+
+	virtual void SetFillColor(std::optional<uint32_t> color) = 0;
+	virtual std::optional<uint32_t> GetFillColor() const = 0;
+
+	virtual void SetOutlineThickness(std::optional<float> thickness) = 0;
+	virtual std::optional<float> GetOutlineThickness() const = 0;
+
+	virtual std::unique_ptr<IShape> Clone() = 0;
+
+	virtual ~IShape() = default;
 };
 
-class IGroup : public IShape
-{
-	virtual uint32_t GetShapesCount() const = 0;
-	virtual std::shared_ptr<IShape> GetShapeAtIndex(uint32_t index) const = 0;
-	virtual void InsertShape(std::shared_ptr<IShape>, uint32_t index) = 0;
-	virtual void RemoveShapeAtIndex(uint32_t index) = 0;
-};
-
-class Shape : public IShape
+class AbstractShape : public IShape
 {
 public:
-	Shape(const RectD& frame)
+	AbstractShape(Frame frame, OutlineStyle outlineStyle, FillStyle fillStyle)
+		: m_frame(frame)
+		, m_outlineStyle(outlineStyle)
+		, m_fillStyle(fillStyle)
 	{
-		if (frame.m_height < 0 || frame.m_width < 0)
-		{
-			throw std::invalid_argument("Width and height must be positive");
-		}
 	}
 
-	RectD GetFrame() const override
+	void SetFrame(const Frame& frame) override
+	{
+		m_frame = frame;
+	}
+
+	std::optional<Frame> GetFrame() const override
 	{
 		return m_frame;
 	}
 
-	void SetFrame(const RectD& frame) override
+	void SetOutlineColor(std::optional<uint32_t> color) override
 	{
-		if (frame.m_height < 0 || frame.m_width < 0)
-		{
-			throw std::invalid_argument("Width and height must be positive");
-		}
-
-		m_frame = frame;
+		m_outlineStyle.SetOutlineColor(color);
 	}
 
-	IShapeStyle& GetShapeStyle() override
+	std::optional<uint32_t> GetOutlineColor() const override
 	{
-		return m_style;
+		return m_outlineStyle.GetOutlineColor();
 	}
 
-	std::shared_ptr<IGroup> GetGroup()
+	void SetFillColor(std::optional<uint32_t> color) override
 	{
-		return nullptr;
+		m_fillStyle.SetFillColor(color);
 	}
 
-protected:
-	RectD m_frame = { 0, 0, 0, 0 };
+	std::optional<uint32_t> GetFillColor() const override
+	{
+		return m_fillStyle.GetFillColor();
+	}
+
+	void SetOutlineThickness(std::optional<float> thickness) override
+	{
+		m_outlineStyle.SetThickness(thickness);
+	}
+
+	std::optional<float> GetOutlineThickness() const override
+	{
+		return m_outlineStyle.GetThickness();
+	}
 
 private:
-	SimpleShapeStyle m_style;
+	Frame m_frame;
+	FillStyle m_fillStyle;
+	OutlineStyle m_outlineStyle;
 };
 
-class Ellipse : public Shape
+class Triangle : public AbstractShape
 {
 public:
-	Ellipse(const RectD& frame)
-		: Shape(frame)
-	{
-	}
-
-	void Draw(ICanvas& canvas) override
-	{
-		// рисуем
-	}
+private:
 };
 
-class Rectangle : public Shape
+class Rectangle : public AbstractShape
 {
 public:
-	Rectangle(const RectD& frame)
-		: Shape(frame)
-	{
-	}
-
-	void Draw(ICanvas& canvas) override
-	{
-		// рисуем
-	}
+private:
 };
 
-class Triangle : public Shape
+class Ellipse : public AbstractShape
 {
 public:
-	Triangle(const RectD& frame)
-		: Shape(frame)
-	{
-	}
-
-	void Draw(ICanvas& canvas) override
-	{
-		// рисуем
-	}
+private:
 };
