@@ -21,8 +21,18 @@ public:
 		m_color = color;
 	}
 
+	bool IsEnable()
+	{
+		if (!m_color)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
 private:
-	std::optional<uint32_t> m_color;
+	std::optional<uint32_t> m_color = std::nullopt;
 };
 
 class OutlineStyle
@@ -32,7 +42,7 @@ public:
 		: m_color(color)
 		, m_thickness(thickness)
 	{
-		if (thickness < 0)
+		if (thickness.has_value() && thickness.value() < 0)
 		{
 			throw std::invalid_argument("Thickness must be positive");
 		}
@@ -58,7 +68,17 @@ public:
 		m_thickness = thickness;
 	}
 
+	bool IsEnable()
+	{
+		if (!m_color || !m_thickness)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
 private:
-	std::optional<uint32_t> m_color;
-	std::optional<float> m_thickness;
+	std::optional<uint32_t> m_color = std::nullopt;
+	std::optional<float> m_thickness = std::nullopt;
 };

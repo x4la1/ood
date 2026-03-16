@@ -28,7 +28,7 @@ public:
 class AbstractShape : public IShape
 {
 public:
-	AbstractShape(Frame frame, OutlineStyle outlineStyle, FillStyle fillStyle)
+	AbstractShape(const Frame& frame, const OutlineStyle& outlineStyle, const FillStyle& fillStyle)
 		: m_frame(frame)
 		, m_outlineStyle(outlineStyle)
 		, m_fillStyle(fillStyle)
@@ -75,7 +75,23 @@ public:
 		return m_outlineStyle.GetThickness();
 	}
 
-private:
+	void Draw(ICanvas& canvas) override
+	{
+		auto outlineColor = m_outlineStyle.GetOutlineColor();
+		canvas.SetOutlineColor(outlineColor.value_or(0x00000000));
+
+		auto fillColor = m_fillStyle.GetFillColor();
+		canvas.SetFillColor(fillColor.value_or(0x00000000));
+
+		auto outlineThickness = m_outlineStyle.GetThickness();
+		canvas.SetOutlineThickness(outlineThickness.value_or(0.f));
+
+		OnDraw(canvas);
+	}
+
+protected:
+	virtual void OnDraw(ICanvas& canvas) = 0;
+
 	Frame m_frame;
 	FillStyle m_fillStyle;
 	OutlineStyle m_outlineStyle;
@@ -84,17 +100,110 @@ private:
 class Triangle : public AbstractShape
 {
 public:
-private:
+	Triangle(const Frame& frame, const OutlineStyle& outlineStyle, const FillStyle& fillStyle)
+		: AbstractShape(frame, outlineStyle, fillStyle)
+	{
+	}
+
+	std::unique_ptr<IShape> Clone() override
+	{
+		return std::make_unique<Triangle>(m_frame, m_outlineStyle, m_fillStyle);
+	}
+
+	void OnDraw(ICanvas& canvas) override
+	{
+		Point p1, p2, p3;
+		p1 = {
+			m_frame.GetTopLeft().x,
+			m_frame.GetTopLeft().y + m_frame.GetHeight()
+		};
+		p2 = {
+			m_frame.GetTopLeft().x + m_frame.GetWidth(),
+			m_frame.GetTopLeft().y + m_frame.GetHeight()
+		};
+		p3 = {
+			m_frame.GetTopLeft().x + m_frame.GetWidth() / 2.f,
+			m_frame.GetTopLeft().y
+		};
+
+		std::vector<Point> points = { p1, p2, p3 };
+
+		canvas.FillPolygon(points);
+		canvas.DrawLine(p1, p2);
+		canvas.DrawLine(p2, p3);
+		canvas.DrawLine(p3, p1);
+	}
 };
 
 class Rectangle : public AbstractShape
 {
 public:
-private:
+	Rectangle(const Frame& frame, const OutlineStyle& outlineStyle, const FillStyle& fillStyle)
+		: AbstractShape(frame, outlineStyle, fillStyle)
+	{
+	}
+
+	std::unique_ptr<IShape> Clone() override
+	{
+		return std::make_unique<Rectangle>(m_frame, m_outlineStyle, m_fillStyle);
+	}
+
+	void OnDraw(ICanvas& canvas) override
+	{
+		Point p1, p2, p3, p4;
+		p1 = {
+			m_frame.GetTopLeft().x,
+			m_frame.GetTopLeft().y
+		};
+
+		p2 = {
+			m_frame.GetTopLeft().x + m_frame.GetWidth(),
+			m_frame.GetTopLeft().y
+		};
+
+		p3 = {
+			m_frame.GetTopLeft().x + m_frame.GetWidth(),
+			m_frame.GetTopLeft().y + m_frame.GetHeight()
+		};
+
+		p4 = {
+			m_frame.GetTopLeft().x,
+			m_frame.GetTopLeft().y + m_frame.GetHeight()
+		};
+
+		std::vector<Point> points = { p1, p2, p3, p4 };
+
+		canvas.FillPolygon(points);
+		canvas.DrawLine(p1, p2);
+		canvas.DrawLine(p2, p3);
+		canvas.DrawLine(p3, p4);
+		canvas.DrawLine(p4, p1);
+	}
 };
 
 class Ellipse : public AbstractShape
 {
 public:
-private:
+	Ellipse(const Frame& frame, const OutlineStyle& outlineStyle, const FillStyle& fillStyle)
+		: AbstractShape(frame, outlineStyle, fillStyle)
+	{
+	}
+
+	std::unique_ptr<IShape> Clone() override
+	{
+		return std::make_unique<Ellipse>(m_frame, m_outlineStyle, m_fillStyle);
+	}
+
+	void OnDraw(ICanvas& canvas) override
+	{
+		canvas.FillEllipse(
+			{ m_frame.GetTopLeft().x + m_frame.GetWidth() / 2.f, m_frame.GetTopLeft().y + m_frame.GetHeight() / 2 },
+			m_frame.GetWidth(),
+			m_frame.GetHeight());
+
+		canvas.DrawEllipse(
+			{ m_frame.GetTopLeft().x + m_frame.GetWidth() / 2.f, m_frame.GetTopLeft().y + m_frame.GetHeight() / 2 },
+			m_frame.GetWidth(),
+			m_frame.GetHeight());
+	}
 };

@@ -17,6 +17,10 @@ public:
 class GroupShape : public IGroupShapes
 {
 public:
+	GroupShape()
+	{
+	}
+
 	GroupShape(std::vector<std::unique_ptr<IShape>> shapes)
 		: m_shapes(std::move(shapes))
 	{
@@ -236,6 +240,14 @@ public:
 
 	std::unique_ptr<IShape> Clone() override
 	{
+		std::vector<std::unique_ptr<IShape>> groupShapes;
+
+		for (auto& shape : m_shapes)
+		{
+			groupShapes.push_back(shape->Clone());
+		}
+
+		return std::make_unique<GroupShape>(std::move(groupShapes));
 	}
 
 	void Draw(ICanvas& canvas) override
