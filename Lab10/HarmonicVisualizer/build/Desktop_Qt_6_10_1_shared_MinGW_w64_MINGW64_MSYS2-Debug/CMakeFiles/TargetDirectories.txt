@@ -1,0 +1,5 @@
+C:/Users/Lebed/source/repos/ood/Lab10/HarmonicVisualizer/build/Desktop_Qt_6_10_1_shared_MinGW_w64_MINGW64_MSYS2-Debug/CMakeFiles/HarmonicVisualizer.dir
+C:/Users/Lebed/source/repos/ood/Lab10/HarmonicVisualizer/build/Desktop_Qt_6_10_1_shared_MinGW_w64_MINGW64_MSYS2-Debug/CMakeFiles/edit_cache.dir
+C:/Users/Lebed/source/repos/ood/Lab10/HarmonicVisualizer/build/Desktop_Qt_6_10_1_shared_MinGW_w64_MINGW64_MSYS2-Debug/CMakeFiles/rebuild_cache.dir
+C:/Users/Lebed/source/repos/ood/Lab10/HarmonicVisualizer/build/Desktop_Qt_6_10_1_shared_MinGW_w64_MINGW64_MSYS2-Debug/CMakeFiles/HarmonicVisualizer_autogen_timestamp_deps.dir
+C:/Users/Lebed/source/repos/ood/Lab10/HarmonicVisualizer/build/Desktop_Qt_6_10_1_shared_MinGW_w64_MINGW64_MSYS2-Debug/CMakeFiles/HarmonicVisualizer_autogen.dir
