@@ -80,15 +80,6 @@ void HarmonicViewModel::UpdateSelectedHarmonic(double amplitude, double frequenc
     }
 }
 
-void HarmonicViewModel::SetChartRange(double xMin, double xMax, int pointsCount)
-{
-    m_xMin = xMin;
-    m_xMax = xMax;
-    m_pointsCount = pointsCount;
-
-    emit ChartDataChanged();
-}
-
 void HarmonicViewModel::OnModelOscillatorsChanged()
 {
     emit HarmonicsListChanged();

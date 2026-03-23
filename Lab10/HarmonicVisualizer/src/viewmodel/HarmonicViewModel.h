@@ -15,8 +15,6 @@ public:
     void SelectHarmonic(int index);
     QUuid GetSelectedId() const;
 
-    void SetChartRange(double xMin, double xMax, int pointsCount);
-
 public slots:
     void AddHarmonic(double amplitude, double frequency, double phase, FunctionType type);
     void RemoveSelectedHarmonic();

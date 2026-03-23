@@ -11,6 +11,7 @@ AddOscillatorDialog::AddOscillatorDialog(QWidget *parent) : QDialog(parent)
 
     auto* validator = new QDoubleValidator(this);
     validator->setNotation(QDoubleValidator::StandardNotation);
+    validator->setLocale(QLocale::C);
     m_ampEdit->setValidator(validator);
     m_freqEdit->setValidator(validator);
     m_phaseEdit->setValidator(validator);

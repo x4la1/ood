@@ -49,10 +49,10 @@ template <> constexpr inline auto MainWindow::qt_create_metaobjectdata<qt_meta_t
         "FunctionType",
         "type",
         "UpdateChart",
-        "OnListSelectionChanged",
-        "OnApplyChangesClicked",
-        "OnAddClicked",
-        "OnRemoveClicked"
+        "ListSelectionChanged",
+        "ApplyChangesClicked",
+        "AddClicked",
+        "RemoveClicked"
     };
 
     QtMocHelpers::UintData qt_methods {
@@ -64,13 +64,13 @@ template <> constexpr inline auto MainWindow::qt_create_metaobjectdata<qt_meta_t
         }}),
         // Slot 'UpdateChart'
         QtMocHelpers::SlotData<void()>(9, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'OnListSelectionChanged'
+        // Slot 'ListSelectionChanged'
         QtMocHelpers::SlotData<void()>(10, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'OnApplyChangesClicked'
+        // Slot 'ApplyChangesClicked'
         QtMocHelpers::SlotData<void()>(11, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'OnAddClicked'
+        // Slot 'AddClicked'
         QtMocHelpers::SlotData<void()>(12, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'OnRemoveClicked'
+        // Slot 'RemoveClicked'
         QtMocHelpers::SlotData<void()>(13, 2, QMC::AccessPrivate, QMetaType::Void),
     };
     QtMocHelpers::UintData qt_properties {
@@ -98,10 +98,10 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 0: _t->UpdateHarmonicsList(); break;
         case 1: _t->UpdateEditFields((*reinterpret_cast<std::add_pointer_t<double>>(_a[1])),(*reinterpret_cast<std::add_pointer_t<double>>(_a[2])),(*reinterpret_cast<std::add_pointer_t<double>>(_a[3])),(*reinterpret_cast<std::add_pointer_t<FunctionType>>(_a[4]))); break;
         case 2: _t->UpdateChart(); break;
-        case 3: _t->OnListSelectionChanged(); break;
-        case 4: _t->OnApplyChangesClicked(); break;
-        case 5: _t->OnAddClicked(); break;
-        case 6: _t->OnRemoveClicked(); break;
+        case 3: _t->ListSelectionChanged(); break;
+        case 4: _t->ApplyChangesClicked(); break;
+        case 5: _t->AddClicked(); break;
+        case 6: _t->RemoveClicked(); break;
         default: ;
         }
     }

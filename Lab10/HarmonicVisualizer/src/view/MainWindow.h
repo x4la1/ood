@@ -27,10 +27,10 @@ private slots:
     void UpdateEditFields(double amp, double freq, double phase, FunctionType type);
     void UpdateChart();
 
-    void OnListSelectionChanged();
-    void OnApplyChangesClicked();
-    void OnAddClicked();
-    void OnRemoveClicked();
+    void ListSelectionChanged();
+    void ApplyChangesClicked();
+    void AddClicked();
+    void RemoveClicked();
 
 private:
     void SetupUi();
